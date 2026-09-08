@@ -61,7 +61,7 @@ app.use((_req, res, next) => {
 });
 
 const PORT = Number(process.env.PORT) || 5000;
-const FRONTEND_URL =
+const frontendUrlRaw =
     process.env.FRONTEND_URL ||
     (process.env.NODE_ENV === "production"
         ? ""
@@ -69,12 +69,15 @@ const FRONTEND_URL =
 
 if (
     process.env.NODE_ENV === "production" &&
-    !FRONTEND_URL
+    !frontendUrlRaw
 ) {
     throw new Error(
         "FRONTEND_URL is required in production"
     );
 }
+
+const FRONTEND_URL =
+    frontendUrlRaw.replace(/\/+$/, "");
 
 const apiRateLimit =
     createRateLimit({
@@ -90,8 +93,25 @@ const apiRateLimit =
 app.use(
     cors({
         origin: FRONTEND_URL,
-        credentials: true
+        credentials: true,
+        methods: [
+            "GET",
+            "HEAD",
+            "POST",
+            "PUT",
+            "PATCH",
+            "DELETE",
+            "OPTIONS",
+        ],
+        allowedHeaders: [
+            "Content-Type",
+        ],
+        optionsSuccessStatus: 204,
     })
+);
+
+console.log(
+    `CORS allowed origin: ${FRONTEND_URL}`
 );
 
 app.use(
