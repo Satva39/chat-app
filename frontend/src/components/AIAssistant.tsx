@@ -28,28 +28,17 @@ function formatAIText(text: string) {
         .trim();
 }
 
-function AIAssistant({
-    roomId,
-}: AIAssistantProps) {
+function AIAssistant({ roomId }: AIAssistantProps) {
     const [open, setOpen] = useState(false);
 
     const [messages, setMessages] =
         useState<ChatItem[]>([]);
 
-    const [input, setInput] =
-        useState("");
-
-    const [loading, setLoading] =
-        useState(false);
-
-    const [summarizing, setSummarizing] =
-        useState(false);
-
-    const [summary, setSummary] =
-        useState("");
-
-    const [error, setError] =
-        useState("");
+    const [input, setInput] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [summarizing, setSummarizing] = useState(false);
+    const [summary, setSummary] = useState("");
+    const [error, setError] = useState("");
 
     const messagesRef =
         useRef<HTMLDivElement | null>(null);
@@ -59,6 +48,7 @@ function AIAssistant({
 
     const buttonDragRef = useRef({
         dragging: false,
+        moved: false,
         startX: 0,
         startY: 0,
     });
@@ -68,11 +58,14 @@ function AIAssistant({
     ) => {
         buttonDragRef.current = {
             dragging: true,
+            moved: false,
             startX: event.clientX,
             startY: event.clientY,
         };
 
-        event.currentTarget.setPointerCapture(event.pointerId);
+        event.currentTarget.setPointerCapture(
+            event.pointerId
+        );
     };
 
     const handleButtonPointerMove = (
@@ -87,10 +80,61 @@ function AIAssistant({
         const dx = event.clientX - drag.startX;
         const dy = event.clientY - drag.startY;
 
-        setButtonPosition((current) => ({
-            x: current.x + dx,
-            y: current.y + dy,
-        }));
+        if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
+            drag.moved = true;
+        }
+
+        setButtonPosition((current) => {
+            const buttonSize = 52;
+            const margin = 10;
+
+            const maxX =
+                Math.max(
+                    0,
+                    window.innerWidth -
+                    buttonSize -
+                    margin
+                );
+
+            const maxY =
+                Math.max(
+                    0,
+                    window.innerHeight -
+                    buttonSize -
+                    margin
+                );
+
+            const nextX = Math.min(
+                Math.max(
+                    current.x + dx,
+                    -(
+                        window.innerWidth -
+                        buttonSize -
+                        margin -
+                        24
+                    )
+                ),
+                maxX - (window.innerWidth - 24 - buttonSize)
+            );
+
+            const nextY = Math.min(
+                Math.max(
+                    current.y + dy,
+                    -(
+                        window.innerHeight -
+                        buttonSize -
+                        margin -
+                        20
+                    )
+                ),
+                maxY - (window.innerHeight - 20 - buttonSize)
+            );
+
+            return {
+                x: nextX,
+                y: nextY,
+            };
+        });
 
         drag.startX = event.clientX;
         drag.startY = event.clientY;
@@ -103,12 +147,23 @@ function AIAssistant({
 
         if (
             event &&
-            event.currentTarget.hasPointerCapture(event.pointerId)
+            event.currentTarget.hasPointerCapture(
+                event.pointerId
+            )
         ) {
             event.currentTarget.releasePointerCapture(
                 event.pointerId
             );
         }
+    };
+
+    const handleButtonClick = () => {
+        if (buttonDragRef.current.moved) {
+            buttonDragRef.current.moved = false;
+            return;
+        }
+
+        setOpen((current) => !current);
     };
 
     useEffect(() => {
@@ -215,9 +270,7 @@ function AIAssistant({
                             </div>
 
                             <div>
-                                <h3>
-                                    AI Assistant
-                                </h3>
+                                <h3>AI Assistant</h3>
 
                                 <span>
                                     Gemma 3 · Local
@@ -237,14 +290,10 @@ function AIAssistant({
                         </button>
                     </header>
 
-                    <div
-                        className="ai-assistant-toolbar"
-                    >
+                    <div className="ai-assistant-toolbar">
                         <button
                             type="button"
-                            onClick={
-                                handleSummarize
-                            }
+                            onClick={handleSummarize}
                             disabled={
                                 !roomId ||
                                 summarizing
@@ -278,9 +327,7 @@ function AIAssistant({
                                     Chat Summary
                                 </div>
 
-                                <p>
-                                    {summary}
-                                </p>
+                                <p>{summary}</p>
                             </section>
                         )}
 
@@ -341,39 +388,35 @@ function AIAssistant({
                             )}
 
                         <div className="ai-messages">
-                            {messages.map(
-                                (message) => (
-                                    <div
-                                        key={
-                                            message.id
-                                        }
-                                        className={`ai-message ${message.role ===
-                                                "user"
-                                                ? "ai-message-user"
-                                                : "ai-message-assistant"
-                                            }`}
-                                    >
-                                        <div className="ai-message-name">
-                                            {message.role ===
-                                                "user"
-                                                ? "You"
-                                                : "Gemma 3"}
-                                        </div>
+                            {messages.map((message) => (
+                                <div
+                                    key={message.id}
+                                    className={`ai-message ${message.role ===
+                                            "user"
+                                            ? "ai-message-user"
+                                            : "ai-message-assistant"
+                                        }`}
+                                >
+                                    <div className="ai-message-name">
+                                        {message.role ===
+                                            "user"
+                                            ? "You"
+                                            : "Gemma 3"}
+                                    </div>
 
-                                        <div className="ai-message-text">
-                                            {formatAIText(
-                                                message.content
-                                            )}
-                                        </div>
-
-                                        {message.model && (
-                                            <div className="ai-message-model">
-                                                {message.model}
-                                            </div>
+                                    <div className="ai-message-text">
+                                        {formatAIText(
+                                            message.content
                                         )}
                                     </div>
-                                )
-                            )}
+
+                                    {message.model && (
+                                        <div className="ai-message-model">
+                                            {message.model}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
                         </div>
 
                         {loading && (
@@ -381,6 +424,7 @@ function AIAssistant({
                                 <span />
                                 <span />
                                 <span />
+
                                 <small>
                                     Gemma 3 is thinking
                                 </small>
@@ -443,9 +487,7 @@ function AIAssistant({
                 onPointerCancel={
                     handleButtonPointerUp
                 }
-                onClick={() =>
-                    setOpen((current) => !current)
-                }
+                onClick={handleButtonClick}
                 aria-label={
                     open
                         ? "Close AI Assistant"
