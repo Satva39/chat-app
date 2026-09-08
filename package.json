@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "npm run dev --prefix backend",
     "build": "npm run build --prefix frontend && npm run build --prefix backend",
-    "start": "npm run start --prefix backend"
+    "start": "npm run start --prefix backend",
+    "test": "npm test --prefix frontend && npm test --prefix backend"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0"

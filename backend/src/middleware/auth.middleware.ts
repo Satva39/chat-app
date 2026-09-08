@@ -8,10 +8,17 @@ function getSessionToken(req: Request): string | null {
         return null;
     }
 
+    const cookieName =
+        process.env.NODE_ENV === "production"
+            ? "__Host-session="
+            : "session=";
+
     const sessionCookie = cookieHeader
         .split(";")
         .map((cookie) => cookie.trim())
-        .find((cookie) => cookie.startsWith("session="));
+        .find((cookie) =>
+            cookie.startsWith(cookieName)
+        );
 
     if (!sessionCookie) {
         return null;
@@ -19,7 +26,7 @@ function getSessionToken(req: Request): string | null {
 
     try {
         return decodeURIComponent(
-            sessionCookie.substring("session=".length)
+            sessionCookie.substring(cookieName.length)
         );
     } catch {
         return null;

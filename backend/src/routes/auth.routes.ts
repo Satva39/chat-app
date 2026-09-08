@@ -262,12 +262,11 @@ router.post("/logout", async (req, res) => {
             : "session";
 
     const cookieParts = [
-        "session=",
+        `${cookieName}=`,
         "HttpOnly",
         "Path=/",
         "Max-Age=0",
-        `SameSite=${sessionCookieOptions.sameSite ===
-            "none"
+        `SameSite=${sessionCookieOptions.sameSite === "none"
             ? "None"
             : "Lax"
         }`,

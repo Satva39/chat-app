@@ -48,20 +48,29 @@ function getSessionToken(
         return null;
     }
 
+    const cookieName =
+        process.env.NODE_ENV === "production"
+            ? "__Host-session="
+            : "session=";
+
     const sessionCookie = cookieHeader
         .split(";")
         .map((cookie) => cookie.trim())
         .find((cookie) =>
-            cookie.startsWith("session=")
+            cookie.startsWith(cookieName)
         );
 
     if (!sessionCookie) {
         return null;
     }
 
-    return decodeURIComponent(
-        sessionCookie.substring("session=".length)
-    );
+    try {
+        return decodeURIComponent(
+            sessionCookie.substring(cookieName.length)
+        );
+    } catch {
+        return null;
+    }
 }
 
 // async function notifyInactiveRoomMembers(
