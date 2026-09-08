@@ -1,4 +1,3 @@
-
 import {
     useEffect,
     useRef,
@@ -97,8 +96,19 @@ function AIAssistant({
         drag.startY = event.clientY;
     };
 
-    const handleButtonPointerUp = () => {
+    const handleButtonPointerUp = (
+        event?: React.PointerEvent<HTMLButtonElement>
+    ) => {
         buttonDragRef.current.dragging = false;
+
+        if (
+            event &&
+            event.currentTarget.hasPointerCapture(event.pointerId)
+        ) {
+            event.currentTarget.releasePointerCapture(
+                event.pointerId
+            );
+        }
     };
 
     useEffect(() => {
@@ -189,34 +199,13 @@ function AIAssistant({
         }
     };
 
-
-
     return (
-        <>
-            <button
-                type="button"
-                className="ai-floating-button"
-                style={{
-                    transform: `translate(${buttonPosition.x}px, ${buttonPosition.y}px)`,
-                    touchAction: "none",
-                }}
-                onPointerDown={handleButtonPointerDown}
-                onPointerMove={handleButtonPointerMove}
-                onPointerUp={handleButtonPointerUp}
-                onPointerCancel={handleButtonPointerUp}
-                onClick={() =>
-                    setOpen((current) => !current)
-                }
-                aria-label={
-                    open
-                        ? "Close AI Assistant"
-                        : "Open AI Assistant"
-                }
-                title="AI Assistant"
-            >
-                {open ? "×" : "✦"}
-            </button>
-
+        <div
+            className="ai-assistant-wrapper"
+            style={{
+                transform: `translate(${buttonPosition.x}px, ${buttonPosition.y}px)`,
+            }}
+        >
             {open && (
                 <aside className="ai-assistant">
                     <header className="ai-assistant-header">
@@ -359,9 +348,9 @@ function AIAssistant({
                                             message.id
                                         }
                                         className={`ai-message ${message.role ===
-                                            "user"
-                                            ? "ai-message-user"
-                                            : "ai-message-assistant"
+                                                "user"
+                                                ? "ai-message-user"
+                                                : "ai-message-assistant"
                                             }`}
                                     >
                                         <div className="ai-message-name">
@@ -435,7 +424,38 @@ function AIAssistant({
                     </form>
                 </aside>
             )}
-        </>
+
+            <button
+                type="button"
+                className="ai-floating-button"
+                style={{
+                    touchAction: "none",
+                }}
+                onPointerDown={
+                    handleButtonPointerDown
+                }
+                onPointerMove={
+                    handleButtonPointerMove
+                }
+                onPointerUp={
+                    handleButtonPointerUp
+                }
+                onPointerCancel={
+                    handleButtonPointerUp
+                }
+                onClick={() =>
+                    setOpen((current) => !current)
+                }
+                aria-label={
+                    open
+                        ? "Close AI Assistant"
+                        : "Open AI Assistant"
+                }
+                title="AI Assistant"
+            >
+                {open ? "×" : "✦"}
+            </button>
+        </div>
     );
 }
 
