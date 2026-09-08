@@ -254,9 +254,15 @@ function AIAssistant({ roomId }: AIAssistantProps) {
         }
     };
 
+    const panelOpensRight =
+        window.innerWidth - 24 - 52 + buttonPosition.x < 382;
+
     return (
         <div
-            className="ai-assistant-wrapper"
+            className={`ai-assistant-wrapper ${panelOpensRight
+                    ? "ai-panel-opens-right"
+                    : "ai-panel-opens-up"
+                }`}
             style={{
                 transform: `translate(${buttonPosition.x}px, ${buttonPosition.y}px)`,
             }}
@@ -392,9 +398,9 @@ function AIAssistant({ roomId }: AIAssistantProps) {
                                 <div
                                     key={message.id}
                                     className={`ai-message ${message.role ===
-                                            "user"
-                                            ? "ai-message-user"
-                                            : "ai-message-assistant"
+                                        "user"
+                                        ? "ai-message-user"
+                                        : "ai-message-assistant"
                                         }`}
                                 >
                                     <div className="ai-message-name">

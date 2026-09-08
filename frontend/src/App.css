@@ -3116,3 +3116,128 @@ body,
     height: min(560px, calc(100dvh - 90px));
   }
 }
+
+/* =================================
+   FINAL FLOATING AI / SMART REPLIES
+   ================================= */
+
+.ai-assistant-wrapper {
+  position: fixed;
+  right: 24px;
+  bottom: 20px;
+  width: 52px;
+  height: 52px;
+  z-index: 3000;
+}
+
+.ai-assistant-wrapper .ai-floating-button {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.ai-assistant-wrapper .ai-assistant {
+  position: absolute;
+  width: 370px;
+  height: 560px;
+  max-height: calc(100vh - 105px);
+  z-index: 2999;
+}
+
+/* Normal position:
+   popup opens ABOVE the button */
+.ai-panel-opens-up .ai-assistant {
+  right: 0;
+  bottom: 68px;
+  left: auto;
+}
+
+/* Button is on the LEFT:
+   popup opens to the RIGHT */
+.ai-panel-opens-right .ai-assistant {
+  left: 64px;
+  right: auto;
+  bottom: 0;
+}
+
+/* =================================
+   SMART REPLIES
+   ================================= */
+
+.smart-replies-wrapper {
+  position: fixed;
+  right: 92px;
+  bottom: 20px;
+  width: max-content;
+  min-height: 38px;
+  z-index: 3001;
+  display: flex;
+  align-items: flex-end;
+}
+
+.smart-replies-wrapper .smart-replies-trigger {
+  position: relative;
+  right: auto;
+  bottom: auto;
+  margin: 0;
+  touch-action: none;
+}
+
+/* Suggestions normally open ABOVE */
+.smart-replies-opens-up {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.smart-replies-opens-up .smart-replies {
+  position: absolute;
+  right: 0;
+  bottom: 48px;
+  left: auto;
+}
+
+/* When button is toward LEFT,
+   suggestions open to the RIGHT */
+.smart-replies-opens-right {
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.smart-replies-opens-right .smart-replies {
+  position: absolute;
+  left: calc(100% + 10px);
+  right: auto;
+  bottom: 0;
+}
+
+/* Never allow suggestion box to exceed viewport */
+.smart-replies-wrapper .smart-replies {
+  max-width: min(420px, calc(100vw - 24px));
+  box-sizing: border-box;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .ai-assistant-wrapper {
+    right: 12px;
+    bottom: 12px;
+  }
+
+  .ai-assistant-wrapper .ai-assistant {
+    width: min(370px, calc(100vw - 24px));
+    height: min(560px, calc(100dvh - 90px));
+  }
+
+  .ai-panel-opens-right .ai-assistant {
+    left: 64px;
+  }
+
+  .smart-replies-wrapper {
+    right: 78px;
+    bottom: 12px;
+  }
+
+  .smart-replies-wrapper .smart-replies {
+    max-width: calc(100vw - 24px);
+  }
+}

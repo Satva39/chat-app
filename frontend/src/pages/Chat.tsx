@@ -1969,9 +1969,14 @@ function Chat() {
                                 onPointerMove={handleSmartRepliesPointerMove}
                                 onPointerUp={handleSmartRepliesPointerUp}
                                 onPointerCancel={handleSmartRepliesPointerUp}
-                                onClick={
-                                    handleSuggestRepliesForLatestMessage
-                                }
+                                onClick={() => {
+                                    if (smartRepliesDragRef.current.moved) {
+                                        smartRepliesDragRef.current.moved = false;
+                                        return;
+                                    }
+
+                                    handleSuggestRepliesForLatestMessage();
+                                }}
                             >
                                 ✦ Smart replies
                             </button>
