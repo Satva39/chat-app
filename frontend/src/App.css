@@ -2629,3 +2629,246 @@ body,
     max-width: calc(100vw - 100px);
   }
 }
+
+/* =========================================================
+   FINAL MOBILE RESPONSIVE FIXES
+   ========================================================= */
+
+@media (max-width: 700px) {
+  .top-header {
+    height: 56px;
+    flex: 0 0 56px;
+    padding: 0 10px;
+  }
+
+  .brand {
+    font-size: 17px;
+    gap: 7px;
+  }
+
+  .brand-logo {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+  }
+
+  .app-body {
+    height: calc(100vh - 56px);
+  }
+
+  /* Chat list */
+  .sidebar {
+    width: 72px;
+    min-width: 72px;
+  }
+
+  .sidebar-header {
+    padding: 12px 6px;
+  }
+
+  .new-chat-button {
+    padding: 7px;
+    font-size: 11px;
+  }
+
+  .chat-search {
+    margin: 0 6px 8px;
+    padding: 9px 5px;
+    text-align: center;
+  }
+
+  .chat-item {
+    padding: 10px 6px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Chat header */
+  .chat-header {
+    min-height: 60px;
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .chat-header h2 {
+    font-size: 14px;
+  }
+
+  .chat-header-search-input {
+    width: min(150px, 38vw);
+  }
+
+  /* Messages */
+  .message-list {
+    padding: 12px 8px;
+    gap: 9px;
+  }
+
+  .message-bubble {
+    max-width: 88%;
+    padding: 9px 11px;
+    border-radius: 13px;
+  }
+
+  .message-bubble p {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  /* Message input */
+  .message-input-area {
+    padding: 8px;
+    gap: 6px;
+  }
+
+  .message-input-area input {
+    height: 44px;
+    padding: 0 11px;
+  }
+
+  .input-action {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+  }
+
+  .send-button {
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    padding: 0;
+  }
+
+  /* Smart replies */
+  .smart-replies-trigger {
+    right: 68px;
+    bottom: 68px;
+  }
+
+  .smart-replies {
+    left: 8px;
+    right: 68px;
+    bottom: 112px;
+    max-width: none;
+  }
+
+  /* AI */
+  .ai-floating-button {
+    right: 10px;
+    bottom: 68px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .ai-assistant {
+    left: 8px;
+    right: 8px;
+    bottom: 124px;
+    width: auto;
+    height: min(560px, calc(100vh - 150px));
+    max-width: none;
+    max-height: none;
+    border-radius: 16px;
+  }
+
+  .ai-assistant-header {
+    min-height: 60px;
+    padding: 10px 12px;
+  }
+
+  .ai-assistant-content {
+    padding: 10px;
+  }
+
+  .ai-message {
+    max-width: 90%;
+  }
+
+  .ai-assistant-input {
+    padding: 8px;
+  }
+
+  /* Side panels */
+  .user-search-sidebar,
+  .group-create-sidebar,
+  .new-chat-sidebar {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    flex: 1 1 auto;
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .brand {
+    font-size: 16px;
+  }
+
+  .brand-logo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .sidebar {
+    width: 64px;
+    min-width: 64px;
+  }
+
+  .avatar {
+    width: 38px;
+    height: 38px;
+  }
+
+  .chat-header {
+    min-height: 56px;
+    padding: 7px 8px;
+  }
+
+  .chat-header-search-input {
+    width: 110px;
+  }
+
+  .message-list {
+    padding: 10px 6px;
+  }
+
+  .message-bubble {
+    max-width: 92%;
+  }
+
+  .message-input-area {
+    padding: 7px 6px;
+  }
+
+  .message-input-area input {
+    min-width: 0;
+  }
+
+  .ai-assistant {
+    left: 5px;
+    right: 5px;
+    bottom: 118px;
+    height: calc(100vh - 140px);
+    border-radius: 14px;
+  }
+
+  .ai-floating-button {
+    right: 8px;
+    bottom: 62px;
+  }
+
+  .smart-replies-trigger {
+    right: 64px;
+    bottom: 62px;
+  }
+
+  .smart-replies {
+    left: 6px;
+    right: 64px;
+    bottom: 106px;
+  }
+}
