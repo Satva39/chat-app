@@ -136,9 +136,15 @@ async function startServer() {
 
     await cleanupMissingAttachments();
 
-    httpServer.listen(PORT, () => {
-        console.log(`Backend running on port ${PORT}`);
-    });
+    httpServer.listen(
+        PORT,
+        "0.0.0.0",
+        () => {
+            console.log(
+                `Backend running on port ${PORT}`
+            );
+        }
+    );
 }
 
 startServer().catch((error) => {
