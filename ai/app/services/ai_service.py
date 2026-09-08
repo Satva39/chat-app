@@ -3,7 +3,11 @@ import json
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
-from ..config import OLLAMA_URL, OLLAMA_MODEL
+from ..config import (
+    OLLAMA_URL,
+    OLLAMA_MODEL,
+    OLLAMA_API_KEY,
+)
 from ..models.ai import AIChatResponse, AISummarizeResponse
 from ..models.ai import (
     AISearchResult,
@@ -37,10 +41,17 @@ def _ollama_chat(
     if json_mode:
         payload["format"] = "json"
 
+    headers = {
+    "Content-Type": "application/json",
+    }
+
+    if OLLAMA_API_KEY:
+        headers["Authorization"] = f"Bearer {OLLAMA_API_KEY}"
+
     request = Request(
         f"{OLLAMA_URL.rstrip('/')}/api/chat",
         data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
+        headers=headers,
         method="POST",
     )
 
@@ -48,7 +59,14 @@ def _ollama_chat(
         with urlopen(request, timeout=120) as response:
             data = json.loads(response.read().decode("utf-8"))
     except HTTPError as error:
-        raise RuntimeError(f"Ollama returned HTTP {error.code}") from error
+        try:
+            error_body = error.read().decode("utf-8")
+        except Exception:
+            error_body = ""
+    
+        raise RuntimeError(
+            f"Ollama returned HTTP {error.code}: {error_body[:500]}"
+        ) from error
     except URLError as error:
         raise RuntimeError("Ollama is not running") from error
 

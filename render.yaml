@@ -21,3 +21,45 @@ services:
 
       - key: FRONTEND_URL
         sync: false
+
+      - key: AI_SERVICE_URL
+        sync: false
+
+      - key: AI_INTERNAL_TOKEN
+        sync: false
+
+
+  - type: web
+    name: chat-app-ai
+    runtime: python
+    rootDir: ai
+
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+
+    healthCheckPath: /health
+
+    envVars:
+      - key: AI_SERVICE_NAME
+        value: Chat App AI Service
+
+      - key: AI_SERVICE_VERSION
+        value: 1.0.0
+
+      - key: AI_HOST
+        value: 0.0.0.0
+
+      - key: AI_PORT
+        value: $PORT
+
+      - key: AI_INTERNAL_TOKEN
+        sync: false
+
+      - key: OLLAMA_URL
+        value: https://ollama.com
+
+      - key: OLLAMA_MODEL
+        sync: false
+
+      - key: OLLAMA_API_KEY
+        sync: false
