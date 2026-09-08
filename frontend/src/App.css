@@ -3241,3 +3241,61 @@ body,
     max-width: calc(100vw - 24px);
   }
 }
+
+/* =========================================================
+   MOBILE IMAGE ATTACHMENT FIX
+   ========================================================= */
+
+.message-bubble {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.message-attachment,
+.attachment-wrapper {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.attachment-image-link,
+.image-attachment-link {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.attachment-image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 360px;
+  box-sizing: border-box;
+  object-fit: contain;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .message-bubble {
+    max-width: 88%;
+    min-width: 0;
+  }
+
+  .message-attachment,
+  .attachment-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .attachment-image,
+  .attachment-image-link,
+  .image-attachment-link {
+    max-width: 100%;
+  }
+}
