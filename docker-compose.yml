@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: chat-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: chat_app
+      POSTGRES_USER: chat_user
+      POSTGRES_PASSWORD: change_me
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  redis:
+    image: redis:8
+    container_name: chat-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
