@@ -55,6 +55,52 @@ function AIAssistant({
     const messagesRef =
         useRef<HTMLDivElement | null>(null);
 
+    const [buttonPosition, setButtonPosition] =
+        useState({ x: 0, y: 0 });
+
+    const buttonDragRef = useRef({
+        dragging: false,
+        startX: 0,
+        startY: 0,
+    });
+
+    const handleButtonPointerDown = (
+        event: React.PointerEvent<HTMLButtonElement>
+    ) => {
+        buttonDragRef.current = {
+            dragging: true,
+            startX: event.clientX,
+            startY: event.clientY,
+        };
+
+        event.currentTarget.setPointerCapture(event.pointerId);
+    };
+
+    const handleButtonPointerMove = (
+        event: React.PointerEvent<HTMLButtonElement>
+    ) => {
+        const drag = buttonDragRef.current;
+
+        if (!drag.dragging) {
+            return;
+        }
+
+        const dx = event.clientX - drag.startX;
+        const dy = event.clientY - drag.startY;
+
+        setButtonPosition((current) => ({
+            x: current.x + dx,
+            y: current.y + dy,
+        }));
+
+        drag.startX = event.clientX;
+        drag.startY = event.clientY;
+    };
+
+    const handleButtonPointerUp = () => {
+        buttonDragRef.current.dragging = false;
+    };
+
     useEffect(() => {
         messagesRef.current?.scrollTo({
             top: messagesRef.current.scrollHeight,
@@ -143,11 +189,21 @@ function AIAssistant({
         }
     };
 
+
+
     return (
         <>
             <button
                 type="button"
                 className="ai-floating-button"
+                style={{
+                    transform: `translate(${buttonPosition.x}px, ${buttonPosition.y}px)`,
+                    touchAction: "none",
+                }}
+                onPointerDown={handleButtonPointerDown}
+                onPointerMove={handleButtonPointerMove}
+                onPointerUp={handleButtonPointerUp}
+                onPointerCancel={handleButtonPointerUp}
                 onClick={() =>
                     setOpen((current) => !current)
                 }

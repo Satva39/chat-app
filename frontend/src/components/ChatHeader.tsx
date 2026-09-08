@@ -109,12 +109,6 @@ function ChatHeader({
                         Search
                     </button>
                 )}
-
-                <button
-                    type="button"
-                >
-                    More
-                </button>
             </div>
         </div>
     );

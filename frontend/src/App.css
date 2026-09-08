@@ -3007,3 +3007,29 @@ body,
     bottom: 110px;
   }
 }
+
+@media (max-width: 700px) {
+  .header-actions {
+    display: flex;
+    gap: 6px;
+  }
+
+  .header-actions button {
+    padding: 7px 9px;
+    font-size: 13px;
+  }
+
+  .notification-button span:first-child {
+    display: inline;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-actions {
+    gap: 4px;
+  }
+
+  .header-actions button {
+    padding: 7px 8px;
+  }
+}

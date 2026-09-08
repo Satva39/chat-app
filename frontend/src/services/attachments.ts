@@ -24,7 +24,9 @@ export interface AttachmentMessage {
 
 const API_URL =
     import.meta.env.VITE_API_URL ||
-    "http://localhost:5000";
+    (import.meta.env.PROD
+        ? "https://chat-app-backend-mqql.onrender.com"
+        : "http://localhost:5000");
 
 export async function uploadAttachment(
     roomId: string,

@@ -51,6 +51,7 @@ function Header({
 
                 <button
                     type="button"
+                    className="logout-button"
                     onClick={handleLogout}
                 >
                     Logout

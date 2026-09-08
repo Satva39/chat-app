@@ -168,6 +168,58 @@ function Chat() {
     const [selectedSmartReply, setSelectedSmartReply] =
         useState("");
 
+    const [smartRepliesPosition, setSmartRepliesPosition] =
+        useState({ x: 0, y: 0 });
+
+    const smartRepliesDragRef = useRef({
+        dragging: false,
+        moved: false,
+        startX: 0,
+        startY: 0,
+    });
+
+    const handleSmartRepliesPointerDown = (
+        event: React.PointerEvent<HTMLButtonElement>
+    ) => {
+        smartRepliesDragRef.current = {
+            dragging: true,
+            moved: false,
+            startX: event.clientX,
+            startY: event.clientY,
+        };
+
+        event.currentTarget.setPointerCapture(event.pointerId);
+    };
+
+    const handleSmartRepliesPointerMove = (
+        event: React.PointerEvent<HTMLButtonElement>
+    ) => {
+        const drag = smartRepliesDragRef.current;
+
+        if (!drag.dragging) {
+            return;
+        }
+
+        const dx = event.clientX - drag.startX;
+        const dy = event.clientY - drag.startY;
+
+        if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+            drag.moved = true;
+        }
+
+        setSmartRepliesPosition((current) => ({
+            x: current.x + dx,
+            y: current.y + dy,
+        }));
+
+        drag.startX = event.clientX;
+        drag.startY = event.clientY;
+    };
+
+    const handleSmartRepliesPointerUp = () => {
+        smartRepliesDragRef.current.dragging = false;
+    };
+
     useEffect(() => {
         selectedRoomIdRef.current =
             selectedRoomId;
@@ -1909,6 +1961,14 @@ function Chat() {
                             <button
                                 type="button"
                                 className="smart-replies-trigger"
+                                style={{
+                                    transform: `translate(${smartRepliesPosition.x}px, ${smartRepliesPosition.y}px)`,
+                                    touchAction: "none",
+                                }}
+                                onPointerDown={handleSmartRepliesPointerDown}
+                                onPointerMove={handleSmartRepliesPointerMove}
+                                onPointerUp={handleSmartRepliesPointerUp}
+                                onPointerCancel={handleSmartRepliesPointerUp}
                                 onClick={
                                     handleSuggestRepliesForLatestMessage
                                 }
